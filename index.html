@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCIENTIA AMANTES - Student Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #1a5f3c;
+            --secondary-green: #2d8a5e;
+            --accent-green: #4ade80;
+            --light-green: #dcfce7;
+            --dark-green: #0f3d26;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 50%, var(--secondary-green) 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 50px 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-green), var(--accent-green), var(--gold));
+        }
+
+        .logo-section {
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(26, 95, 60, 0.3);
+        }
+
+        .login-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-msg {
+            background: var(--light-green);
+            border-left: 4px solid var(--primary-green);
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--dark-green);
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-green);
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary-green);
+            box-shadow: 0 0 0 4px rgba(45, 138, 94, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 95, 60, 0.3);
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+            border-left: 4px solid #dc2626;
+        }
+
+        .footer-text {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--white);
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 24px;
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--primary-green);
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .logout-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 2px solid var(--primary-green);
+            color: var(--primary-green);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--primary-green);
+            color: var(--white);
+        }
+
+        .main-content {
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--white);
+            padding: 30px 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .welcome-text h2 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .welcome-text p {
+            opacity: 0.9;
+        }
+
+        .welcome-icon {
+            font-size: 60px;
+            opacity: 0.3;
+        }
+
+        /* Profile Card */
+        .profile-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-section::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: linear-gradient(180deg, var(--gold), var(--accent-green));
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 40px;
+            flex-shrink: 0;
+            border: 4px solid var(--light-green);
+        }
+
+        .profile-info h3 {
+            font-size: 24px;
+            color: var(--primary-green);
+            margin-bottom: 15px;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Folders Section */
+        .folders-section h3 {
+            font-size: 22px;
+            color: var(--white);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .year-section {
+            margin-bottom: 40px;
+        }
+
+        .year-header {
+            background: var(--white);
+            color: var(--primary-green);
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .folders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .folder-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 25px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .folder-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-green), var(--accent-green));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .folder-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: var(--secondary-green);
+        }
+
+        .folder-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .folder-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--light-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .folder-card:hover .folder-icon {
+            background: var(--primary-green);
+            transform: scale(1.1);
+        }
+
+        .folder-card:hover .folder-icon {
+            color: var(--white);
+        }
+
+        .folder-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 8px;
+        }
+
+        .folder-desc {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .folder-arrow {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-green);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .folder-card:hover .folder-arrow {
+            opacity: 1;
+            right: 15px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-green);
+            color: var(--white);
+            padding: 30px 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .footer-text-main {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .footer-year {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin: 10px 0;
+        }
+
+        .footer-disclaimer {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .welcome-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .folders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-card {
+                padding: 30px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <div class="logo-icon">📚</div>
+                <h1 class="login-title">SCIENTIA AMANTES</h1>
+                <p class="login-subtitle">A student academic resource portal for BSED 2 Science students</p>
+            </div>
+
+            <div class="welcome-msg">
+                <strong>WELCOME TO SCIENTIA AMANTES</strong><br>
+                Before you proceed, please sign in using the specific Gmail and password provided by the team.
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your Gmail address" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="login-btn">Sign In to Portal</button>
+            </form>
+
+            <div id="errorMessage" class="error-message">
+                Access Denied. The Gmail or password is not registered in the system.
+            </div>
+
+            <div class="footer-text">
+                This system is designed exclusively for BSED 2 Science students.<br>
+                All study guides and learning materials are redirected to Google Drive folders.
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <header class="header">
+            <div class="header-left">
+                <div class="header-logo">📚</div>
+                <div>
+                    <div class="header-title">SCIENTIA AMANTES</div>
+                    <div class="header-subtitle">Student Academic Portal</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </header>
+
+        <main class="main-content">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner fade-in">
+                <div class="welcome-text">
+                    <h2>Welcome back, <span id="studentName">Student</span>! 👋</h2>
+                    <p>Access your study materials and academic resources below.</p>
+                </div>
+                <div class="welcome-icon">🎓</div>
+            </div>
+
+            <!-- Profile Card -->
+            <div class="profile-section fade-in">
+                <div class="profile-avatar" id="profileAvatar">👤</div>
+                <div class="profile-info">
+                    <h3 id="profileName">Student Name</h3>
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Student ID</span>
+                            <span class="detail-value" id="profileId">2024-XXXXX</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Course</span>
+                            <span class="detail-value">Bachelor of Secondary Education (BSED)</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Major</span>
+                            <span class="detail-value">Science</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Department</span>
+                            <span class="detail-value">School of Teachers Education</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Campus</span>
+                            <span class="detail-value">Main Campus</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Guides Section -->
+            <div class="folders-section">
+                <h3>📁 Study Guide Folders</h3>
+
+                <!-- 1st Year -->
+                <div class="year-section">
+                    <div class="year-header">1ST YEAR</div>
+                    <div class="folders-grid">
+                        <a href="https://drive.google.com/drive/folders/1e9pb-4wtwGFSUwi0TojOzW9k-G2JpkT2?usp=drive_link" target="_blank" class="folder-card">
+                            <div class="folder-icon">📂</div>
+                            <div class="folder-title">1st Year Folder</div>
+                            <div class="folder-desc">Complete 1st Year Study Materials</div>
+                            <div class="folder-arrow">→</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2nd Year -->
+                <div class="year-section">
+                    <div class="year-header">2ND YEAR</div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <div style="color: var(--white); font-weight: 600; margin-bottom: 15px; font-size: 16px;">📖 1st Semester</div>
+                        <div class="folders-grid">
+                            <a href="https://drive.google.com/drive/folders/1wldx7nG0P3TanRr5T8xwx63oq5zYXQtv?usp=drive_link" target="_blank" class="folder-card">
+                                <div class="folder-icon">📂</div>
+                                <div class="folder-title">1st Semester Folder</div>
+                                <div class="folder-desc">Complete 1st Semester Materials</div>
+                                <div class="folder-arrow">→</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="color: var(--white); font-weight: 600; margin-bottom: 15px; font-size: 16px;">📖 2nd Semester</div>
+                        <div class="folders-grid">
+                            <a href="https://drive.google.com/drive/folders/1l8ePOFsxMDtt34ejfKU0LLzXF2Uzo_xm?usp=drive_link" target="_blank" class="folder-card">
+                                <div class="folder-icon">🧪</div>
+                                <div class="folder-title">Analytical Chemistry</div>
+                                <div class="folder-desc">Laboratory and Lecture Materials</div>
+                                <div class="folder-arrow">→</div>
+                            </a>
+                            <a href="https://drive.google.com/drive/folders/1oq_LaR6Jpnith87KfR6RkoqAQng3hAwe?usp=drive_link" target="_blank" class="folder-card">
+                                <div class="folder-icon">🧬</div>
+                                <div class="folder-title">Biochemistry</div>
+                                <div class="folder-desc">Biological Chemistry Resources</div>
+                                <div class="folder-arrow">→</div>
+                            </a>
+                            <a href="https://drive.google.com/drive/folders/1PAgPBDGQTNpulCGY4CjJe3Q4hl4dVu72?usp=drive_link" target="_blank" class="folder-card">
+                                <div class="folder-icon">🤟</div>
+                                <div class="folder-title">ASL 2</div>
+                                <div class="folder-desc">American Sign Language 2</div>
+                                <div class="folder-arrow">→</div>
+                            </a>
+                            <a href="https://drive.google.com/drive/folders/1AIYUfj__KHkt0Ye2RrlOPL8YyWbG5XRX?usp=drive_link" target="_blank" class="folder-card">
+                                <div class="folder-icon">🧬</div>
+                                <div class="folder-title">Genetics</div>
+                                <div class="folder-desc">Genetic Principles & Applications</div>
+                                <div class="folder-arrow">→</div>
+                            </a>
+                            <a href="https://drive.google.com/drive/folders/1CNF89fEeQdgKhurThI-KMJg3mNCuDihB?usp=drive_link" target="_blank" class="folder-card">
+                                <div class="folder-icon">📜</div>
+                                <div class="folder-title">Life and Works of Rizal</div>
+                                <div class="folder-desc">Philippine History & Culture</div>
+                                <div class="folder-arrow">→</div>
+                            </a>
+                            <a href="https://drive.google.com/drive/folders/1ZrpzQljp-Pc5lP4LFz123JPaoxjkStft?usp=drive_link" target="_blank" class="folder-card">
+                                <div class="folder-icon">👨‍🏫</div>
+                                <div class="folder-title">The Teacher and the Community</div>
+                                <div class="folder-desc">Professional Education Course</div>
+                                <div class="folder-arrow">→</div>
+                            </a>
+                            <a href="https://drive.google.com/drive/folders/1BN19VtuRpwOLFAKfDgmyfpp5PteZMDXR?usp=drive_link" target="_blank" class="folder-card">
+                                <div class="folder-icon">🏃</div>
+                                <div class="folder-title">PATHFIT 4</div>
+                                <div class="folder-desc">Physical Fitness Activities</div>
+                                <div class="folder-arrow">→</div>
+                            </a>
+                            <a href="https://drive.google.com/drive/folders/1O9WX2ScaFYbj8agwX1oXLqC_aHNANldQ?usp=drive_link" target="_blank" class="folder-card">
+                                <div class="folder-icon">⚡</div>
+                                <div class="folder-title">Waves and Optics</div>
+                                <div class="folder-desc">Physics - Wave Mechanics</div>
+                                <div class="folder-arrow">→</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-title">SCIENTIA AMANTES</div>
+                <div class="footer-text-main">BSED 2 Science Students</div>
+                <div class="footer-year">Year 2026</div>
+                <div class="footer-disclaimer">For Educational Purposes Only</div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Student Database
+        const students = {
+            "kimjane@jhcsc.edu.ph": {
+                password: "46271",
+                name: "Kim Jane",
+                id: "2024-46271"
+            },
+            "reysheltoledo@jhcsc.edu.ph": {
+                password: "46524",
+                name: "Reyshel Toledo",
+                id: "2024-46524"
+            },
+            "molhimdiwa@jhcsc.edu.ph": {
+                password: "45768",
+                name: "Molhim Diwa",
+                id: "2024-45768"
+            }
+        };
+
+        // Login Form Handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.toLowerCase().trim();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Check credentials
+            if (students[email] && students[email].password === password) {
+                // Successful login
+                const student = students[email];
+                
+                // Update profile information
+                document.getElementById('studentName').textContent = student.name;
+                document.getElementById('profileName').textContent = student.name;
+                document.getElementById('profileId').textContent = student.id;
+                document.getElementById('profileAvatar').textContent = student.name.charAt(0).toUpperCase();
+                
+                // Hide login, show dashboard
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            } else {
+                // Failed login
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+        });
+
+        // Logout Function
+        function logout() {
+            // Clear form
+            document.getElementById('loginForm').reset();
+            document.getElementById('errorMessage').style.display = 'none';
+            
+            // Show login, hide dashboard
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+        }
+
+        // Check for Enter key on password field
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>
